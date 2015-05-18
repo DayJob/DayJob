@@ -72,8 +72,6 @@ public class FindTask extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
-				Toast.makeText(FindTask.this, arraylist.get(position),
-						Toast.LENGTH_LONG).show();
 
 			}
 
@@ -90,7 +88,9 @@ public class FindTask extends Activity {
 
 		@Override
 		protected String doInBackground(String... urls) {
+
 			StringBuilder jsonHtml = new StringBuilder();
+
 			try {
 
 				// 연결 url 설정
@@ -116,17 +116,8 @@ public class FindTask extends Activity {
 							jsonHtml.append(line + "\n");
 						}
 						br.close();
-					} else {
-						Toast.makeText(FindTask.this,
-								"서버 상태가 불안정합니다. 잠시후 다시 시도해보세요.",
-								Toast.LENGTH_SHORT).show();
 					}
 					conn.disconnect();
-				} else {
-
-					Toast.makeText(FindTask.this,
-							"네트워크 상태가 불안정합니다. 잠시후 다시 시도해보세요.",
-							Toast.LENGTH_SHORT).show();
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -149,15 +140,21 @@ public class FindTask extends Activity {
 							.getString("description"), task
 							.getString("location"), task.getString("time"),
 							task.getString("phone"), task.getString("category")));
+					adapter = new TaskAdapter(FindTask.this, alist,
+							R.layout.task);
+					list = (ListView) findViewById(R.id.listView1);
+					list.setAdapter(adapter);
 
 				}
+
 			} catch (JSONException e) {
 				e.printStackTrace();
-			}
 
-			adapter = new TaskAdapter(FindTask.this, alist, R.layout.task);
-			list = (ListView) findViewById(R.id.listView1);
-			list.setAdapter(adapter);
+				Toast.makeText(FindTask.this,
+						"데이터를 받아올 수 없습니다. 인터넷 연결 상태를 확인하세요.", Toast.LENGTH_LONG)
+						.show();
+
+			}
 
 		}
 	}

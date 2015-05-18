@@ -56,6 +56,7 @@ public class FindTaskMap extends FragmentActivity {
 	private List<Address> addr;
 	private TextView tv;
 	private SearchView sv;
+	private Intent intent;
 
 	private static Map<String, Integer> iconItem = new HashMap<String, Integer>() {
 		{
@@ -71,40 +72,26 @@ public class FindTaskMap extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_find_task_map);
 
+		// 객체 선언부
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
-
 		mLocMan = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		mProvider = mLocMan.getBestProvider(new Criteria(), true);
-
 		location = mLocMan.getLastKnownLocation(mProvider);
-
 		mCoder = new Geocoder(this);
-
-		try {
-			addr = mCoder.getFromLocation(location.getLatitude(),
-					location.getLongitude(), 5);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		intent = getIntent();
 
 		tv = (TextView) findViewById(R.id.textView2);
-
-		tv.setText("현재위치 : " + addr.get(0).getAddressLine(0));
+		sv = (SearchView) findViewById(R.id.searchView1);
 
 		map.setMyLocationEnabled(true);
 		map.getUiSettings().setZoomControlsEnabled(true);
-
-		Intent intent = getIntent();
-
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(
 				new LatLng(
 						intent.getDoubleExtra("lat", location.getLatitude()),
 						intent.getDoubleExtra("lng", location.getLongitude())),
 				15));
 
-		sv = (SearchView) findViewById(R.id.searchView1);
 		sv.setQueryHint("주소로 검색");
 		sv.setIconifiedByDefault(true);
 		sv.setOnQueryTextListener(new OnQueryTextListener() {
@@ -114,14 +101,17 @@ public class FindTaskMap extends FragmentActivity {
 
 				try {
 					addr = mCoder.getFromLocationName(query, 5);
+					map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+							new LatLng(addr.get(0).getLatitude(), addr.get(0)
+									.getLongitude()), 15));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
 
-				map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-						addr.get(0).getLatitude(), addr.get(0).getLongitude()),
-						15));
+					Toast.makeText(FindTaskMap.this,
+							"연결 대기시간 초과, 인터넷 접속상태를 확인하세요", Toast.LENGTH_LONG)
+							.show();
+				}
 
 				return false;
 			}
@@ -132,6 +122,21 @@ public class FindTaskMap extends FragmentActivity {
 				return false;
 			}
 		});
+
+		try {
+
+			addr = mCoder.getFromLocation(location.getLatitude(),
+					location.getLongitude(), 5);
+			tv.setText("현재위치 : " + addr.get(0).getAddressLine(0));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			Toast.makeText(this, "연결 대기시간 초과, 인터넷 접속상태를 확인하세요",
+					Toast.LENGTH_LONG).show();
+			tv.setText("현재위치 : 알수없음");
+		}
 
 		MyAsync myAsync = new MyAsync();
 		myAsync.execute("http://www.feering.zc.bz/testTaskSelect.php");
@@ -292,8 +297,8 @@ public class FindTaskMap extends FragmentActivity {
 
 			markerOptions.title(item.getTitle());
 			markerOptions.snippet(item.getSnippet());
-			markerOptions.icon(BitmapDescriptorFactory
-					.fromResource(item.getIcon()));
+			markerOptions.icon(BitmapDescriptorFactory.fromResource(item
+					.getIcon()));
 		}
 
 		@Override
@@ -334,17 +339,8 @@ public class FindTaskMap extends FragmentActivity {
 							jsonHtml.append(line + "\n");
 						}
 						br.close();
-					} else {
-						Toast.makeText(FindTaskMap.this,
-								"서버 상태가 불안정합니다. 잠시후 다시 시도해보세요.",
-								Toast.LENGTH_SHORT).show();
 					}
 					conn.disconnect();
-				} else {
-
-					Toast.makeText(FindTaskMap.this,
-							"네트워크 상태가 불안정합니다. 잠시후 다시 시도해보세요.",
-							Toast.LENGTH_SHORT).show();
 				}
 			} catch (Exception ex) {
 				ex.printStackTrace();

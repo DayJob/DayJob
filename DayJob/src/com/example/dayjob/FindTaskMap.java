@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -23,9 +24,17 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
@@ -229,9 +238,15 @@ public class FindTaskMap extends FragmentActivity {
 
 					@Override
 					public boolean onClusterClick(Cluster<TaskMarker> cluster) {
-						// TODO Auto-generated method stub
-						
-						return false;
+						// FragmentManager manager =
+						// getSupportFragmentManager();
+						// MyDialogFragment dialog = new MyDialogFragment();
+						//
+						// dialog.show(manager, "dialog");
+
+						map.animateCamera(CameraUpdateFactory.zoomIn());
+
+						return true;
 					}
 				});
 
@@ -307,9 +322,12 @@ public class FindTaskMap extends FragmentActivity {
 
 	class MyClusterRenderer extends DefaultClusterRenderer<TaskMarker> {
 
+		private static final int MIN_CLUSTER_SIZE = 4;
+
 		public MyClusterRenderer(Context context, GoogleMap map,
 				ClusterManager<TaskMarker> clusterManager) {
 			super(context, map, clusterManager);
+
 		}
 
 		@Override
@@ -328,6 +346,12 @@ public class FindTaskMap extends FragmentActivity {
 				Marker marker) {
 			super.onClusterItemRendered(clusterItem, marker);
 			// here you have access to the marker itself
+		}
+
+		@Override
+		protected boolean shouldRenderAsCluster(Cluster<TaskMarker> cluster) {
+			// start clustering if at least 5 items overlap
+			return cluster.getSize() > MIN_CLUSTER_SIZE;
 		}
 	}
 
@@ -431,4 +455,57 @@ public class FindTaskMap extends FragmentActivity {
 		return latlng;
 	}
 
+	class MyDialogFragment extends android.support.v4.app.DialogFragment
+			implements OnItemClickListener {
+
+		private String[] listitems = { "item01", "item02", "item03", "item04" };
+		private ListView mylist;
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+
+			View view = inflater.inflate(R.layout.dialog_fragment, null, false);
+			mylist = (ListView) view.findViewById(R.id.list);
+
+			getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+			return view;
+		}
+
+		@Override
+		public void onActivityCreated(Bundle savedInstanceState) {
+
+			super.onActivityCreated(savedInstanceState);
+
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+					getActivity(), android.R.layout.simple_list_item_1,
+					listitems);
+
+			mylist.setAdapter(adapter);
+
+			mylist.setOnItemClickListener(this);
+
+		}
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+
+			dismiss();
+			Toast.makeText(getActivity(), listitems[position],
+					Toast.LENGTH_SHORT).show();
+
+		}
+
+	}
+
+	public void mOnClick(View v) {
+		switch (v.getId()) {
+		case R.id.button1:
+			Intent findTask = new Intent(this, FindTask.class);
+			findTask.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			startActivity(findTask);
+			break;
+		}
+	}
 }

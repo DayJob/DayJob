@@ -19,7 +19,6 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -156,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:background="#000000"
+            android:background="@drawable/nomal_button"
             android:onClick="mOnClick"
             android:padding="10dp"
             android:text="취소하기"
@@ -167,7 +166,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:background="#000000"
+            android:background="@drawable/nomal_button"
             android:onClick="mOnClick"
             android:padding="10dp"
             android:text="등록하기"

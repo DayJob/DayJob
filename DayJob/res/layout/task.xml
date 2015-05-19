@@ -72,7 +72,7 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#FF5050"
+                android:background="@drawable/location_button"
                 android:padding="10dp"
                 android:text="위치"
                 android:textColor="#FFFFFF"

@@ -64,10 +64,27 @@
             android:textSize="15sp" />
     </LinearLayout>
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.MapFragment"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="20dp"
+            android:background="#99FFFFFF"
+            android:onClick="mOnClick"
+            android:padding="10dp"
+            android:text="목록보기"
+            android:textColor="#606060" />
+    </FrameLayout>
 
 </LinearLayout>

@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">DayJob</string>
+    <string name="app_name">데이잡</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_add_task">AddTask</string>
-    <string name="title_activity_find_task">FindTask</string>
-    <string name="title_activity_find_task_map">FindTaskMap</string>
-    <string name="title_activity_add_task_map">AddTaskMap</string>
+    <string name="title_activity_add_task">등록하기</string>
+    <string name="title_activity_find_task">목록보기</string>
+    <string name="title_activity_find_task_map">위치검색</string>
+    <string name="title_activity_add_task_map">위치선택</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>Home</item>
+        <item>Find People</item>
+        <item>Photos</item>
+        <item>Communities</item>
+        <item>Pages</item>
+        <item>What\'s Hot</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/bike</item>
+        <item>@drawable/call</item>
+        <item>@drawable/clean</item>
+        <item>@drawable/fix</item>
+        <item>@drawable/food</item>
+        <item>@drawable/poster</item>
+        <item>@drawable/shipping</item>
+        <item>@drawable/write</item>
+    </array>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+    <string-array name="task_category">
+        <item >수리</item>
+        <item >청소</item>
+        <item >노가다</item>
+        <item >단순노동</item>
+        <item >전단지</item>
+        <item >과외</item>
+        <item >배달</item>
+        <item >전화업무</item>
+    </string-array>
 
 </resources>

@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,17 +25,32 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FindTask extends Activity {
+public class FindTask extends FindTaskMap {
 
 	private ArrayList<MyTask> alist;
 	private ListView list;
 	private TaskAdapter adapter;
 	private ArrayList<String> arraylist;
+
+	private static Map<String, Integer> iconItemContent = new HashMap<String, Integer>() {
+		{
+
+			put("수리", R.drawable.fix);
+			put("청소", R.drawable.clean);
+			put("노가다", R.drawable.fix);
+			put("단순노동", R.drawable.bike);
+			put("전단지", R.drawable.poster);
+			put("과외", R.drawable.write);
+			put("배달", R.drawable.bike);
+			put("전화업무", R.drawable.call);
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +181,11 @@ public class FindTask extends Activity {
 		LayoutInflater inflater; // Dog.xml 뷰를 확장하기 위한 것
 		ArrayList<MyTask> alist;
 		int layout;
+		private ImageView img;
+		private TextView tv1;
+		private TextView tv2;
+		private TextView tv3;
+		private TextView tv4;
 
 		// 생성자
 		public TaskAdapter(Context context, ArrayList<MyTask> alist, int layout) {
@@ -199,16 +221,17 @@ public class FindTask extends Activity {
 			if (convertView == null) {
 				convertView = inflater.inflate(layout, parent, false);
 			}
-			// ImageView img = (ImageView)
-			// convertView.findViewById(R.id.imageView1);
-			// img.setImageResource(alist.get(position).category);
-			TextView tv1 = (TextView) convertView.findViewById(R.id.textView1);
+
+			img = (ImageView) convertView.findViewById(R.id.imageView1);
+			img.setImageResource(iconItemContent.get(alist.get(position).category));
+
+			tv1 = (TextView) convertView.findViewById(R.id.textView1);
 			tv1.setText("보수 : " + alist.get(position).pay);
-			TextView tv2 = (TextView) convertView.findViewById(R.id.textView2);
+			tv2 = (TextView) convertView.findViewById(R.id.textView2);
 			tv2.setText("설명 : " + alist.get(position).description);
-			TextView tv3 = (TextView) convertView.findViewById(R.id.textView3);
+			tv3 = (TextView) convertView.findViewById(R.id.textView3);
 			tv3.setText("시간 : " + alist.get(position).time);
-			TextView tv4 = (TextView) convertView.findViewById(R.id.textView4);
+			tv4 = (TextView) convertView.findViewById(R.id.textView4);
 			tv4.setText("연락처 : " + alist.get(position).phone);
 
 			final double[] latlng = getLatlng(alist.get(position).location);

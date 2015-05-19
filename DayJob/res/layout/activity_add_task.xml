@@ -6,15 +6,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center" >
+        android:layout_marginBottom="10dp"
+        android:background="#FF5050" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Task"
+            android:layout_margin="10dp"
+            android:text="@string/title_activity_add_task"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -40,7 +43,6 @@
 
             <requestFocus />
         </EditText>
-
     </LinearLayout>
 
     <LinearLayout
@@ -61,14 +63,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" />
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:visibility="gone" >
+        android:layout_margin="10dp" >
 
         <TextView
             android:id="@+id/textView4"
@@ -84,7 +84,6 @@
             android:layout_weight="1"
             android:ems="10"
             android:enabled="false" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -105,7 +104,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -127,7 +125,6 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="phone" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -147,7 +144,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -160,17 +156,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:background="#000000"
             android:onClick="mOnClick"
-            android:text="취소하기" />
+            android:padding="10dp"
+            android:text="취소하기"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:background="#000000"
             android:onClick="mOnClick"
-            android:text="등록하기" />
-
+            android:padding="10dp"
+            android:text="등록하기"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
     <LinearLayout

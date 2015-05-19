@@ -23,6 +23,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -58,12 +59,30 @@ public class FindTaskMap extends FragmentActivity {
 	private SearchView sv;
 	private Intent intent;
 
-	private static Map<String, Integer> iconItem = new HashMap<String, Integer>() {
+	private static Map<String, Integer> iconItemMarker = new HashMap<String, Integer>() {
 		{
-			put("수리", R.drawable.repair);
+			put("수리", R.drawable.fix_small);
+			put("청소", R.drawable.clean_small);
+			put("노가다", R.drawable.fix_small);
+			put("단순노동", R.drawable.bike_small);
+			put("전단지", R.drawable.poster_small);
+			put("과외", R.drawable.write_small);
+			put("배달", R.drawable.bike_small);
+			put("전화업무", R.drawable.call_small);
+		}
+	};
+
+	private static Map<String, Integer> iconItemContent = new HashMap<String, Integer>() {
+		{
+
+			put("수리", R.drawable.fix);
 			put("청소", R.drawable.clean);
-			put("노가다", R.drawable.labor);
-			put("단순노동", R.drawable.repair);
+			put("노가다", R.drawable.fix);
+			put("단순노동", R.drawable.bike);
+			put("전단지", R.drawable.poster);
+			put("과외", R.drawable.write);
+			put("배달", R.drawable.bike);
+			put("전화업무", R.drawable.call);
 		}
 	};
 
@@ -92,8 +111,9 @@ public class FindTaskMap extends FragmentActivity {
 						intent.getDoubleExtra("lng", location.getLongitude())),
 				15));
 
-		sv.setQueryHint("주소로 검색");
 		sv.setIconifiedByDefault(true);
+		sv.setQueryHint(Html.fromHtml("<font color = #ffffff>" + "주소로검색"
+				+ "</font>"));
 		sv.setOnQueryTextListener(new OnQueryTextListener() {
 
 			@Override
@@ -195,7 +215,8 @@ public class FindTaskMap extends FragmentActivity {
 						TextView tv2 = (TextView) v
 								.findViewById(R.id.textView2);
 
-						img.setImageResource(iconItem.get(marker.getTitle()));
+						img.setImageResource(iconItemContent.get(marker
+								.getTitle()));
 						tv1.setText(marker.getTitle());
 						tv2.setText(marker.getSnippet());
 
@@ -209,6 +230,7 @@ public class FindTaskMap extends FragmentActivity {
 					@Override
 					public boolean onClusterClick(Cluster<TaskMarker> cluster) {
 						// TODO Auto-generated method stub
+						
 						return false;
 					}
 				});
@@ -267,8 +289,8 @@ public class FindTaskMap extends FragmentActivity {
 								+ task.getString("pay") + " \n설명 : "
 								+ task.getString("description") + " \n시간 : "
 								+ task.getString("time") + " \n연락처 : "
-								+ task.getString("phone"), iconItem.get(task
-								.getString("category")));
+								+ task.getString("phone"),
+						iconItemMarker.get(task.getString("category")));
 
 				mClusterManager.addItem(item);
 

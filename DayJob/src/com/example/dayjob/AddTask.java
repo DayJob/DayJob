@@ -3,6 +3,7 @@ package com.example.dayjob;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,6 +18,9 @@ import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,8 +34,12 @@ import android.widget.Toast;
 
 public class AddTask extends Activity {
 
+	Geocoder mCoder;
 	String pay, description, location, time, phone, category;
 	private ArrayList<String> arraylist;
+	private ArrayAdapter<String> adapter;
+	private String[] str;
+	private List<Address> addr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +48,38 @@ public class AddTask extends Activity {
 
 		Intent intent = getIntent();
 
+		mCoder = new Geocoder(this);
+
 		EditText et = (EditText) findViewById(R.id.editText3);
 
 		location = intent.getStringExtra("latitude") + ", "
 				+ intent.getStringExtra("longitude");
 
+		try {
+
+			addr = mCoder.getFromLocation(
+					Double.valueOf(intent.getStringExtra("latitude")),
+					Double.valueOf(intent.getStringExtra("longitude")), 5);
+
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		et.setText(addr.get(0).getAddressLine(0));
+
 		arraylist = new ArrayList<String>();
 
-		arraylist.add("수리");
+		str = getResources().getStringArray(R.array.task_category);
 
-		arraylist.add("청소");
+		for (int i = 0; i < str.length; i++) {
+			arraylist.add(str[i]);
+		}
 
-		arraylist.add("노가다");
-
-		arraylist.add("단순노동");
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+		adapter = new ArrayAdapter<String>(this,
 
 		android.R.layout.simple_spinner_dropdown_item, arraylist);
 
@@ -105,8 +129,8 @@ public class AddTask extends Activity {
 					.toString();
 			phone = ((EditText) (findViewById(R.id.editText5))).getText()
 					.toString();
-//			category = ((EditText) (findViewById(R.id.spinner1))).getText()
-//					.toString();
+			// category = ((EditText) (findViewById(R.id.spinner1))).getText()
+			// .toString();
 
 			if (pay.equals("") || description.equals("") || location.equals("")
 					|| time.equals("") || phone.equals("")

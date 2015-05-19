@@ -19,9 +19,8 @@
                 android:id="@+id/imageView1"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher" />
-
+                android:adjustViewBounds="true"
+                android:src="@drawable/fix" />
         </LinearLayout>
 
         <LinearLayout
@@ -73,11 +72,13 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#FF5050"
+                android:padding="10dp"
                 android:text="위치"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>

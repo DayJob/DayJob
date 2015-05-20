@@ -40,6 +40,7 @@ import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -244,12 +245,12 @@ public class FindTaskMap extends FragmentActivity {
 						//
 						// dialog.show(manager, "dialog");
 
-						map.animateCamera(CameraUpdateFactory
-								.newLatLng(new LatLng(
-										cluster.getPosition().latitude, cluster
-												.getPosition().longitude)));
-
-						map.animateCamera(CameraUpdateFactory.zoomIn());
+						// map.animateCamera(CameraUpdateFactory.zoomIn());
+						map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+								new LatLng(cluster.getPosition().latitude,
+										cluster.getPosition().longitude), map
+										.getCameraPosition().zoom + 2), 500,
+								null);
 
 						return true;
 					}

@@ -244,6 +244,11 @@ public class FindTaskMap extends FragmentActivity {
 						//
 						// dialog.show(manager, "dialog");
 
+						map.animateCamera(CameraUpdateFactory
+								.newLatLng(new LatLng(
+										cluster.getPosition().latitude, cluster
+												.getPosition().longitude)));
+
 						map.animateCamera(CameraUpdateFactory.zoomIn());
 
 						return true;

@@ -5,15 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -24,7 +21,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,32 +64,8 @@ public class FindTaskMap extends FragmentActivity {
 	private SearchView sv;
 	private Intent intent;
 
-	private static Map<String, Integer> iconItemMarker = new HashMap<String, Integer>() {
-		{
-			put("수리", R.drawable.fix_small);
-			put("청소", R.drawable.clean_small);
-			put("노가다", R.drawable.fix_small);
-			put("단순노동", R.drawable.bike_small);
-			put("전단지", R.drawable.poster_small);
-			put("과외", R.drawable.write_small);
-			put("배달", R.drawable.bike_small);
-			put("전화업무", R.drawable.call_small);
-		}
-	};
-
-	private static Map<String, Integer> iconItemContent = new HashMap<String, Integer>() {
-		{
-
-			put("수리", R.drawable.fix);
-			put("청소", R.drawable.clean);
-			put("노가다", R.drawable.fix);
-			put("단순노동", R.drawable.bike);
-			put("전단지", R.drawable.poster);
-			put("과외", R.drawable.write);
-			put("배달", R.drawable.bike);
-			put("전화업무", R.drawable.call);
-		}
-	};
+	public static final String DRAWABLES_PATH = ":drawable/";
+	private TaskMarker item;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -224,8 +196,7 @@ public class FindTaskMap extends FragmentActivity {
 						TextView tv2 = (TextView) v
 								.findViewById(R.id.textView2);
 
-						img.setImageResource(iconItemContent.get(marker
-								.getTitle()));
+						img.setImageResource(item.getIcon());
 						tv1.setText(marker.getTitle());
 						tv2.setText(marker.getSnippet());
 
@@ -297,15 +268,21 @@ public class FindTaskMap extends FragmentActivity {
 			for (int i = 0; i < ja.length(); i++) {
 				JSONObject task = ja.getJSONObject(i);
 
-				double[] latlng = getLatlng(task.getString("location"));
-
-				TaskMarker item = new TaskMarker(latlng[0], latlng[1],
+				item = new TaskMarker(task.getDouble("latitude"),
+						task.getDouble("longitude"),
 						task.getString("category"), "보수: "
 								+ task.getString("pay") + " \n설명 : "
 								+ task.getString("description") + " \n시간 : "
 								+ task.getString("time") + " \n연락처 : "
-								+ task.getString("phone"),
-						iconItemMarker.get(task.getString("category")));
+								+ task.getString("phone"), getResources()
+								.getIdentifier(
+										"com.example.dayjob" + DRAWABLES_PATH
+												+ task.getString("image_name"),
+										null, null), getResources()
+								.getIdentifier(
+										"com.example.dayjob" + DRAWABLES_PATH
+												+ task.getString("image_name")
+												+ "_small", null, null));
 
 				mClusterManager.addItem(item);
 
@@ -338,7 +315,7 @@ public class FindTaskMap extends FragmentActivity {
 			markerOptions.title(item.getTitle());
 			markerOptions.snippet(item.getSnippet());
 			markerOptions.icon(BitmapDescriptorFactory.fromResource(item
-					.getIcon()));
+					.getSmallIcon()));
 		}
 
 		@Override
@@ -439,21 +416,21 @@ public class FindTaskMap extends FragmentActivity {
 		}
 	}
 
-	public double[] getLatlng(String str) {
-
-		String[] temp = new String(str).split(",");
-
-		double[] latlng = new double[temp.length];
-
-		int counter = 0;
-
-		for (String s : temp) {
-			latlng[counter] = Double.parseDouble(s);
-			counter++;
-		}
-
-		return latlng;
-	}
+	// public double[] getLatlng(String str) {
+	//
+	// String[] temp = new String(str).split(",");
+	//
+	// double[] latlng = new double[temp.length];
+	//
+	// int counter = 0;
+	//
+	// for (String s : temp) {
+	// latlng[counter] = Double.parseDouble(s);
+	// counter++;
+	// }
+	//
+	// return latlng;
+	// }
 
 	class MyDialogFragment extends android.support.v4.app.DialogFragment
 			implements OnItemClickListener {

@@ -18,7 +18,6 @@ import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -35,25 +34,27 @@ import android.widget.Toast;
 public class AddTask extends Activity {
 
 	Geocoder mCoder;
-	String pay, description, location, time, phone, category;
+	String pay, description, location, time, phone, category, latitude,
+			longitude;
 	private ArrayList<String> arraylist;
 	private ArrayAdapter<String> adapter;
 	private String[] str;
 	private List<Address> addr;
+	private Intent intent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_task);
 
-		Intent intent = getIntent();
+		intent = getIntent();
 
 		mCoder = new Geocoder(this);
 
-		EditText et = (EditText) findViewById(R.id.editText3);
+		EditText et3 = (EditText) findViewById(R.id.editText3);
 
-		location = intent.getStringExtra("latitude") + ", "
-				+ intent.getStringExtra("longitude");
+		latitude = intent.getStringExtra("latitude");
+		longitude = intent.getStringExtra("longitude");
 
 		try {
 
@@ -69,7 +70,7 @@ public class AddTask extends Activity {
 			e.printStackTrace();
 		}
 
-		et.setText(addr.get(0).getAddressLine(0));
+		et3.setText(addr.get(0).getAddressLine(0));
 
 		arraylist = new ArrayList<String>();
 
@@ -123,8 +124,8 @@ public class AddTask extends Activity {
 					.toString();
 			description = ((EditText) (findViewById(R.id.editText2))).getText()
 					.toString();
-			// location = ((EditText) (findViewById(R.id.editText3))).getText()
-			// .toString();
+			location = ((EditText) (findViewById(R.id.editText3))).getText()
+					.toString();
 			time = ((EditText) (findViewById(R.id.editText4))).getText()
 					.toString();
 			phone = ((EditText) (findViewById(R.id.editText5))).getText()
@@ -185,6 +186,10 @@ public class AddTask extends Activity {
 				params.add(new BasicNameValuePair("phone", phone));
 
 				params.add(new BasicNameValuePair("category", category));
+
+				params.add(new BasicNameValuePair("latitude", latitude));
+
+				params.add(new BasicNameValuePair("longitude", longitude));
 
 				HttpClient client = new DefaultHttpClient();
 

@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -37,20 +39,7 @@ public class FindTask extends FindTaskMap {
 	private ListView list;
 	private TaskAdapter adapter;
 	private ArrayList<String> arraylist;
-
-	private static Map<String, Integer> iconItemContent = new HashMap<String, Integer>() {
-		{
-
-			put("수리", R.drawable.fix);
-			put("청소", R.drawable.clean);
-			put("노가다", R.drawable.fix);
-			put("단순노동", R.drawable.bike);
-			put("전단지", R.drawable.poster);
-			put("과외", R.drawable.write);
-			put("배달", R.drawable.bike);
-			put("전화업무", R.drawable.call);
-		}
-	};
+	public static final String DRAWABLES_PATH = ":drawable/";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +145,14 @@ public class FindTask extends FindTaskMap {
 					alist.add(new MyTask(task.getString("pay"), task
 							.getString("description"), task
 							.getString("location"), task.getString("time"),
-							task.getString("phone"), task.getString("category")));
+							task.getString("phone"),
+							task.getString("category"),
+							getResources().getIdentifier(
+									"com.example.dayjob" + DRAWABLES_PATH
+											+ task.getString("image_name"),
+									null, null), Double.valueOf(task
+									.getString("latitude")), Double
+									.valueOf(task.getString("longitude"))));
 					adapter = new TaskAdapter(FindTask.this, alist,
 							R.layout.task);
 					list = (ListView) findViewById(R.id.listView1);
@@ -216,14 +212,14 @@ public class FindTask extends FindTaskMap {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			if (convertView == null) {
 				convertView = inflater.inflate(layout, parent, false);
 			}
 
 			img = (ImageView) convertView.findViewById(R.id.imageView1);
-			img.setImageResource(iconItemContent.get(alist.get(position).category));
+			img.setImageResource(alist.get(position).icon);
 
 			tv1 = (TextView) convertView.findViewById(R.id.textView1);
 			tv1.setText("보수 : " + alist.get(position).pay);
@@ -233,8 +229,6 @@ public class FindTask extends FindTaskMap {
 			tv3.setText("시간 : " + alist.get(position).time);
 			tv4 = (TextView) convertView.findViewById(R.id.textView4);
 			tv4.setText("연락처 : " + alist.get(position).phone);
-
-			final double[] latlng = getLatlng(alist.get(position).location);
 
 			Button btn = (Button) convertView.findViewById(R.id.button1);
 
@@ -248,8 +242,8 @@ public class FindTask extends FindTaskMap {
 						Intent findTaskMap = new Intent(FindTask.this,
 								FindTaskMap.class);
 						findTaskMap.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-						findTaskMap.putExtra("lat", latlng[0]);
-						findTaskMap.putExtra("lng", latlng[1]);
+						findTaskMap.putExtra("lat", alist.get(position).latitude);
+						findTaskMap.putExtra("lng", alist.get(position).longitude);
 						startActivity(findTaskMap);
 
 						break;
@@ -261,21 +255,21 @@ public class FindTask extends FindTaskMap {
 			return convertView;
 		}
 
-		public double[] getLatlng(String str) {
-
-			String[] temp = new String(str).split(",");
-
-			double[] latlng = new double[temp.length];
-
-			int counter = 0;
-
-			for (String s : temp) {
-				latlng[counter] = Double.parseDouble(s);
-				counter++;
-			}
-
-			return latlng;
-		}
+//		public double[] getLatlng(String str) {
+//
+//			String[] temp = new String(str).split(",");
+//
+//			double[] latlng = new double[temp.length];
+//
+//			int counter = 0;
+//
+//			for (String s : temp) {
+//				latlng[counter] = Double.parseDouble(s);
+//				counter++;
+//			}
+//
+//			return latlng;
+//		}
 	}
 
 }
@@ -287,9 +281,13 @@ class MyTask {
 	String time;
 	String phone;
 	String category;
+	int icon;
+	double latitude;
+	double longitude;
 
 	public MyTask(String pay, String description, String location, String time,
-			String phone, String category) {
+			String phone, String category, int icon, double latitude,
+			double longitude) {
 		super();
 		this.pay = pay;
 		this.description = description;
@@ -297,6 +295,9 @@ class MyTask {
 		this.time = time;
 		this.phone = phone;
 		this.category = category;
+		this.icon = icon;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 }

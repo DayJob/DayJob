@@ -7,14 +7,17 @@ public class TaskMarker implements ClusterItem {
 	private final LatLng mPosition;
 	private final String mTitle;
 	private final String mSnippet;
-	private final int mIcon;
+	private final int icon;
+	private final int small_Icon;
 
 	public TaskMarker(double lat, double lng, String mTitle, String mSnippet,
-			int mIcon) {
-		mPosition = new LatLng(lat, lng);
+			int icon, int small_Icon) {
+		this.mPosition = new LatLng(lat, lng);
 		this.mTitle = mTitle;
 		this.mSnippet = mSnippet;
-		this.mIcon = mIcon;
+		this.icon = icon;
+		this.small_Icon = small_Icon;
+
 	}
 
 	@Override
@@ -31,7 +34,11 @@ public class TaskMarker implements ClusterItem {
 	}
 
 	public int getIcon() {
-		return mIcon;
+		return icon;
+	}
+
+	public int getSmallIcon() {
+		return small_Icon;
 	}
 
 }

@@ -1,3 +1,4 @@
+int array marker_icon 0x7f0b0003
 int array nav_drawer_icons 0x7f0b0001
 int array nav_drawer_items 0x7f0b0000
 int array task_category 0x7f0b0002

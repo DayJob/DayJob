@@ -34,6 +34,7 @@
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
+    
     <string-array name="task_category">
         <item >수리</item>
         <item >청소</item>
@@ -43,6 +44,29 @@
         <item >과외</item>
         <item >배달</item>
         <item >전화업무</item>
+        <item >이벤트</item>
+        <item >이사짐</item>
+        <item >요가</item>
+        <item >사진기사</item>
+        <item >리모델링</item>
+        
+    </string-array>
+    
+    <string-array name="marker_icon">
+        <item >@drawable/fix</item>
+        <item >@drawable/clean</item>
+        <item >@drawable/fix</item>
+        <item >@drawable/bike</item>
+        <item >@drawable/poster</item>
+        <item >@drawable/write</item>
+        <item >@drawable/bike</item>
+        <item >@drawable/call</item>
+        <item >@drawable/poster</item>
+        <item >@drawable/shipping</item>
+        <item >@drawable/poster</item>
+        <item >@drawable/poster</item>
+        <item >@drawable/bike</item>
+        
     </string-array>
 
 </resources>
